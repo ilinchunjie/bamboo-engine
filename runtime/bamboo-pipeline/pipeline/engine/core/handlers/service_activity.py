@@ -54,7 +54,7 @@ class ServiceActivityHandler(FlowElementHandler):
         element.data.outputs._loop = status.loop + default_settings.PIPELINE_RERUN_INDEX_OFFSET
 
         # pre output extract
-        process.top_pipeline.context.extract_output(element, set_miss=False)
+        process.top_pipeline.context.extract_output(element, set_miss=False, pipeline_data=process.top_pipeline.data)
 
         # hydrate inputs
         hydrate_node_data(element)
@@ -136,7 +136,7 @@ class ServiceActivityHandler(FlowElementHandler):
                     ),
                 )
 
-            process.top_pipeline.context.extract_output(element)
+            process.top_pipeline.context.extract_output(element, pipeline_data=process.top_pipeline.data)
             error_ignorable = not element.get_result_bit()
 
             if monitoring:

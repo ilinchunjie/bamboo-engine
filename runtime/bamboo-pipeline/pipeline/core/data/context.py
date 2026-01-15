@@ -25,10 +25,10 @@ class Context(object):
         self._change_keys = set()
         self._raw_variables = None
 
-    def extract_output(self, activity, set_miss=True):
-        self.extract_output_from_data(activity.id, activity.data, set_miss=set_miss)
+    def extract_output(self, activity, set_miss=True, pipeline_data=None):
+        self.extract_output_from_data(activity.id, activity.data, set_miss=set_miss, pipeline_data=pipeline_data)
 
-    def extract_output_from_data(self, activity_id, data, set_miss=True):
+    def extract_output_from_data(self, activity_id, data, set_miss=True, pipeline_data=None):
         if activity_id in self.act_outputs:
             global_outputs = self.act_outputs[activity_id]
             output = data.get_outputs()
@@ -41,6 +41,16 @@ class Context(object):
 
                 self.variables[global_outputs[key]] = output.get(key, global_outputs[key])
                 self.change_keys.add(global_outputs[key])
+                
+        # Sync pipeline_data.inputs to self.variables (parent_data.inputs → context.variables)
+        if pipeline_data is not None:
+            try:
+                for key, value in pipeline_data.inputs.items():
+                    if key in self.variables:
+                        self.variables[key] = value
+                        self.change_keys.add(key)
+            except Exception:
+                pass
 
     def get(self, key):
         try:

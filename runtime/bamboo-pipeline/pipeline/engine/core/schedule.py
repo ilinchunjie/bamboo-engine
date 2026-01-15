@@ -235,7 +235,7 @@ def schedule(process_id, schedule_id, data_id=None):
 
                 process.top_pipeline.data.update_outputs(parent_data.get_outputs())
                 # extract outputs
-                process.top_pipeline.context.extract_output(service_act)
+                process.top_pipeline.context.extract_output(service_act, pipeline_data=process.top_pipeline.data)
                 process.save(save_snapshot=True)
 
                 # clear temp data

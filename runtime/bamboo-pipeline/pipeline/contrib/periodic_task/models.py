@@ -13,7 +13,7 @@ specific language governing permissions and limitations under the License.
 
 import ujson as json
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from pipeline.constants import PIPELINE_DEFAULT_PRIORITY
 from pipeline.contrib.periodic_task.signals import periodic_task_start_failed
